@@ -1,20 +1,19 @@
 <template>
-  <h1>
-    <button @click="isStrip = !isStrip">🚩 isStrip</button>
-    {{ props.comicContent.id }} - {{ props.comicContent.name }}
-  </h1>
+  <header>
+    <h1>{{ props.comicContent.id }} - {{ props.comicContent.name }}</h1>
+    <SocialLinks>test</SocialLinks>
+  </header>
 
   <article v-if="isStrip === true">
     <img class="comic-strip" :src="props.comicContent.image" />
   </article>
 
   <article v-else>
-    <img
-      v-for="img in props.comicContent.slides"
-      class="comic-strip"
-      :src="img"
-      :key="img"
-    />
+    <carousel :items-to-show="1">
+      <slide v-for="img in props.comicContent.slides" :key="img">
+        <img class="comic-strip" :src="img" />
+      </slide>
+    </carousel>
   </article>
 
   <div v-if="isStrip === false">
@@ -23,15 +22,35 @@
 </template>
 
 <script setup>
-import { ref, defineProps } from "vue";
+import { ref, defineProps, onMounted, onUnmounted } from "vue";
+import SocialLinks from "@/components/SocialLinks.vue";
+import "vue3-carousel/dist/carousel.css";
+import { Carousel, Slide } from "vue3-carousel";
+
 const props = defineProps({
   comicContent: Object,
 });
 
-// TODO: isStrip should be a global variable
-// so that it memorizes
-// even better write it in the local storage
 const isStrip = ref(true);
+
+onMounted(() => {
+  console.log("mounted");
+  resizeHandler();
+  window.addEventListener("resize", resizeHandler);
+});
+onUnmounted(() => {
+  console.log("unmounted");
+  window.removeEventListener("resize", resizeHandler);
+});
+
+const resizeHandler = () => {
+  if (window.innerWidth > 768) {
+    isStrip.value = true;
+  } else {
+    isStrip.value = false;
+  }
+  console.log(window.innerWidth);
+};
 </script>
 
 <style scoped>
@@ -46,5 +65,12 @@ const isStrip = ref(true);
 h1 {
   text-align: left;
   padding-left: 3%;
+  display: inline-block;
+}
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  max-width: 97%;
 }
 </style>
