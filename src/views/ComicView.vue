@@ -16,10 +16,8 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { useComicContent } from "@/composables/comicContent";
-import axios from "axios";
 import ComicContent from "@/components/ComicContent.vue";
 import ComicControls from "@/components/ComicControls.vue";
 import LinkBoxes from "@/components/LinkBoxes.vue";
@@ -27,20 +25,8 @@ import router from "@/router";
 import MainMenu from "@/components/MainMenu.vue";
 
 /* route */
-
 const route = useRoute();
 let comicID = route.params.id;
-
-/* AXIOS call to API */
-const fetchComics = () => {
-  axios
-    .get("https://avjam.xyz/avjamcomics/wp-json/wp/v2/posts")
-    .then((response) => {
-      console.log("comics", response.data[0]);
-    });
-};
-
-onMounted(fetchComics);
 
 /* set useComicContent */
 

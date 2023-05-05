@@ -1,13 +1,13 @@
 <template>
   <footer>
-    <div>
-      <img src="../assets/social/facebook.jpg" />
-      <img src="../assets/social/twitter.jpg" />
-      <img src="../assets/social/insta.jpg" />
-    </div>
+    <SocialLinks></SocialLinks>
     <div>© AVJAMComics 2023 | Comics | Contact</div>
   </footer>
 </template>
+
+<script setup>
+import SocialLinks from "@/components/SocialLinks.vue";
+</script>
 
 <style scoped>
 footer {
@@ -23,15 +23,5 @@ footer {
   justify-content: center;
   flex-direction: column;
   gap: 10px;
-}
-
-div {
-  display: flex;
-  gap: 4px;
-  justify-content: center;
-}
-
-img {
-  max-height: 22px;
 }
 </style>

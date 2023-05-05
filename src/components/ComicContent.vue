@@ -1,7 +1,7 @@
 <template>
   <header>
     <h1>{{ props.comicContent.id }} - {{ props.comicContent.name }}</h1>
-    <SocialLinks>test</SocialLinks>
+    <SocialLinks></SocialLinks>
   </header>
 
   <article v-if="isStrip === true">
