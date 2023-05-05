@@ -1,36 +1,22 @@
-<template v-if="!loading">
+<template>
   <router-view :key="$route.path" />
   <FooterContent></FooterContent>
 </template>
 
 <script setup>
 import FooterContent from "@/components/FooterContent.vue";
-import { useComicContentStore } from "@/stores/comics";
-import { onMounted, computed } from "vue";
-import { axios } from "axios";
+import { onMounted, reactive } from "vue";
+import axios from "axios";
 
-const store = useComicContentStore();
-const loading = computed(() => store.loading);
+const comicData = reactive({});
 
-const fetchComics = () => {
-  console.log("fetching comics");
-  try {
-    console.log("trying");
-    store.loading = true;
-    axios
-      .get("https://avjam.xyz/avjamcomics/wp-json/wp/v2/posts")
-      .then((response) => {
-        console.log("1", response);
-      });
-  } catch (error) {
-    store.error = error;
-  } finally {
-    store.loading = false;
-  }
-};
-
-onMounted(fetchComics);
-console.log(loading);
+onMounted(async () => {
+  const response = await axios({
+    url: "https://avjam.xyz/avjamcomics/wp-json/wp/v2/posts?categories=2",
+  });
+  comicData.items = await response.json();
+  console.log(comicData.items);
+});
 </script>
 
 <style>
