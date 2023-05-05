@@ -41,10 +41,7 @@ export function useComicContent() {
     (comic) => comic.category === selectedComic
   );
 
-  console.log(comicContentFiltered);
-
   const latestComic = comicContentFiltered.length.toString().padStart(4, "0");
-  console.log(latestComic);
 
   return { comicContent, latestComic };
 }

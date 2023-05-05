@@ -63,8 +63,6 @@ if (prevComic === "0000") {
   isFirst = true;
 }
 
-console.log("c", comicContent);
-
 if (currentComicContent.id === latestComic) {
   isLast = true;
   router.push({ path: "/latest" });

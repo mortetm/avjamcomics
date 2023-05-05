@@ -34,12 +34,10 @@ const props = defineProps({
 const isStrip = ref(true);
 
 onMounted(() => {
-  console.log("mounted");
   resizeHandler();
   window.addEventListener("resize", resizeHandler);
 });
 onUnmounted(() => {
-  console.log("unmounted");
   window.removeEventListener("resize", resizeHandler);
 });
 
@@ -49,7 +47,6 @@ const resizeHandler = () => {
   } else {
     isStrip.value = false;
   }
-  console.log(window.innerWidth);
 };
 </script>
 
