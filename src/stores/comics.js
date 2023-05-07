@@ -15,7 +15,7 @@ export const useComicContentStore = defineStore("comicContent", {
     getLatestComic(state) {
       console.log("comics in state", state.comics);
 
-      return "";
+      return "0001";
     },
   },
   actions: {

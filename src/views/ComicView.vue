@@ -40,8 +40,8 @@ let latestComic = computed(() => {
 
 onMounted(() => {
   console.log("on CV mounted");
-  console.log("latestComic value data", latestComic.value.data);
-  console.log("store", store);
+  console.log("latestComic value data", latestComic.value);
+  console.log("store", store.comics);
   isLoading = store.loading;
   console.log(isLoading);
 });
