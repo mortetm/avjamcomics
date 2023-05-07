@@ -5,18 +5,14 @@
 
 <script setup>
 import FooterContent from "@/components/FooterContent.vue";
-import { onMounted, reactive } from "vue";
-import axios from "axios";
+import { useComicContentStore } from "./stores/comics";
 
-const comicData = reactive({});
+/* store setup */
+const store = useComicContentStore();
 
-onMounted(async () => {
-  const response = await axios({
-    url: "https://avjam.xyz/avjamcomics/wp-json/wp/v2/posts?categories=2",
-  });
-  comicData.items = await response.json();
-  console.log(comicData.items);
-});
+/* call the API on mounted hook*/
+
+store.fetchComics();
 </script>
 
 <style>

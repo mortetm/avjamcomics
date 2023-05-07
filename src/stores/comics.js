@@ -1,38 +1,38 @@
 import { defineStore } from "pinia";
-import { ref, computed } from "vue";
 import axios from "axios";
 
-export const useComicContentStore = defineStore("comicContent", () => {
-  const comics = ref([]);
-  const comic = null;
-  const loading = false;
-  const error = null;
+export const useComicContentStore = defineStore("comicContent", {
+  state: () => ({
+    comics: [],
+    comic: null,
+    loading: false,
+    error: null,
+  }),
+  getters: {
+    getComics(state) {
+      return state.comics;
+    },
+    getLatestComic(state) {
+      console.log("comics in state", state.comics);
 
-  const fetchComics = computed(() => {
-    console.log(this.comics);
-    this.loading = true;
-    try {
-      this.comics = axios
-        .get("https://avjam.xyz/avjamcomics/wp-json/wp/v2/posts")
-        .then((response) => {
-          this.comics = response.data;
-          console.log("comics fetched", response);
-        });
-    } catch (error) {
-      this.error = error;
-    } finally {
-      this.loading = false;
-    }
-    return this.comics;
-  });
-
-  return {
-    comics,
-    comic,
-    loading,
-    error,
-    fetchComics,
-  };
+      return "";
+    },
+  },
+  actions: {
+    async fetchComics() {
+      this.loading = true;
+      try {
+        const data = await axios.get(
+          "https://avjam.xyz/avjamcomics/wp-json/wp/v2/posts"
+        );
+        this.comics = data.data;
+        this.loading = false;
+      } catch (error) {
+        alert(error);
+        console.log("Error fetching comic data: ", error);
+      }
+    },
+  },
 });
 
 // import axios from "axios";
@@ -48,4 +48,4 @@ export const useComicContentStore = defineStore("comicContent", () => {
 //     });
 // };
 
-// onMounted(fetchComics);
+// onMounted(fetchComics)

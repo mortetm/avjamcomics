@@ -1,9 +1,15 @@
+<!--
+// import { useComicContent } from "@/composables/comicContent";
+// import ComicContent from "@/components/ComicContent.vue";
+// import router from "@/router";
+-->
 <template>
   <MainMenu></MainMenu>
 
-  <div class="page">
+  <div class="page" v-if="!isLoading">
+    test
     <div class="home">
-      <ComicContent :comicContent="currentComicContent"></ComicContent>
+      <!-- <ComicContent :comicContent="currentComicContent"></ComicContent> -->
       <ComicControls
         :prev="prevComic"
         :next="nextComic"
@@ -16,30 +22,47 @@
 </template>
 
 <script setup>
+import { computed, onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
-import { useComicContent } from "@/composables/comicContent";
-import ComicContent from "@/components/ComicContent.vue";
 import ComicControls from "@/components/ComicControls.vue";
 import LinkBoxes from "@/components/LinkBoxes.vue";
-import router from "@/router";
 import MainMenu from "@/components/MainMenu.vue";
+import { useComicContentStore } from "@/stores/comics";
 
+let isLoading = ref(null);
+
+/* store setup */
+const store = useComicContentStore();
+
+let latestComic = computed(() => {
+  return store.getLatestComic;
+});
+
+onMounted(() => {
+  console.log("on CV mounted");
+  console.log("latestComic value data", latestComic.value.data);
+  console.log("store", store);
+  isLoading = store.loading;
+  console.log(isLoading);
+});
 /* route */
 const route = useRoute();
 let comicID = route.params.id;
 
 /* set useComicContent */
 
-const { comicContent, latestComic } = useComicContent();
-
+// const { comicContentOLD, latestComic } = useComicContent();
 /* if route id = undefined, default to last comic */
+// let latestComic = null;
 if (!comicID) {
   comicID = latestComic;
 }
 
 const nextComic = (+comicID + 1).toString().padStart(4, "0"),
   prevComic = (+comicID - 1).toString().padStart(4, "0");
-const currentComicContent = comicContent.find((comic) => comic.id === comicID);
+// const currentComicContent = comicContent.value.find(
+//   (comic) => comic.id === comicID
+// );
 /* comic */
 
 let isLast = false,
@@ -49,10 +72,10 @@ if (prevComic === "0000") {
   isFirst = true;
 }
 
-if (currentComicContent.id === latestComic) {
-  isLast = true;
-  router.push({ path: "/latest" });
-}
+// if (currentComicContent.id === latestComic) {
+//   isLast = true;
+//   router.push({ path: "/latest" });
+// }
 
 /* width */
 </script>
