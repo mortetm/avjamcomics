@@ -28,7 +28,6 @@ export const useComicContentStore = defineStore("comicContent", {
         this.comics = data.data;
         this.loading = false;
       } catch (error) {
-        alert(error);
         console.log("Error fetching comic data: ", error);
       }
     },

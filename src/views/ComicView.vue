@@ -39,11 +39,7 @@ let latestComic = computed(() => {
 });
 
 onMounted(() => {
-  console.log("on CV mounted");
-  console.log("latestComic value data", latestComic.value);
-  console.log("store", store.comics);
   isLoading = store.loading;
-  console.log(isLoading);
 });
 /* route */
 const route = useRoute();
@@ -51,18 +47,15 @@ let comicID = route.params.id;
 
 /* set useComicContent */
 
-// const { comicContentOLD, latestComic } = useComicContent();
 /* if route id = undefined, default to last comic */
-// let latestComic = null;
 if (!comicID) {
-  comicID = latestComic;
+  comicID = latestComic.value;
 }
 
+console.log(store.comics);
 const nextComic = (+comicID + 1).toString().padStart(4, "0"),
   prevComic = (+comicID - 1).toString().padStart(4, "0");
-// const currentComicContent = comicContent.value.find(
-//   (comic) => comic.id === comicID
-// );
+const currentComicContent = store.comics.find((comic) => comic.id === comicID);
 /* comic */
 
 let isLast = false,
@@ -71,6 +64,9 @@ let isLast = false,
 if (prevComic === "0000") {
   isFirst = true;
 }
+
+console.log("IN THE WILD", store.comics);
+console.log(currentComicContent);
 
 // if (currentComicContent.id === latestComic) {
 //   isLast = true;
