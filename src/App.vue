@@ -1,12 +1,12 @@
 <template>
-  <Suspense>
-    <div v-if="store.latestComicPostID">
-      <router-view :key="$route.path" />
-    </div>
-    <template #fallback> ...Loading </template>
-  </Suspense>
+  <div v-if="!store.latestComicPostID">
+    <div class="loading">... Loading</div>
+  </div>
 
-  <FooterContent></FooterContent>
+  <div v-if="store.latestComicPostID">
+    <router-view :key="$route.path" />
+    <FooterContent></FooterContent>
+  </div>
 </template>
 
 <script setup>
@@ -45,5 +45,24 @@ store.fetchComics();
 
 h1 {
   margin: 0px;
+}
+
+a {
+  text-decoration: none;
+  color: #324458;
+  transition: 0.3s;
+}
+
+a:hover {
+  color: #d4af37;
+  text-decoration: underline;
+}
+
+.loading {
+  height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
 }
 </style>

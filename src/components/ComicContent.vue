@@ -73,4 +73,12 @@ header {
   align-items: flex-end;
   max-width: 97%;
 }
+
+@media screen and (max-width: 768px) {
+  header {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+}
 </style>
