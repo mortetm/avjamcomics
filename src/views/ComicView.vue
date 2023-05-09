@@ -1,12 +1,21 @@
 <template>
-  <div class="page">
+  <div class="page" v-if="store.comics.length > 0">
+    <MainMenu :lastComic="store.latestComicPostID"></MainMenu>
     <div class="home">
-      <ComicContent :comicContent="currentComicContent"></ComicContent>
+      <ComicContent
+        :comicContent="store.comics.find((comic) => comic.post_id === comicID)"
+      ></ComicContent>
+      {{ store.comics.length.toString().padStart(4, "0") }}
       <ComicControls
-        :prev="prevComic"
-        :next="nextComic"
-        :isLast="isLast"
-        :isFirst="isFirst"
+        :prev="(+comicID - 1).toString().padStart(4, '0')"
+        :next="(+comicID + 1).toString().padStart(4, '0')"
+        :isLast="
+          comicID === store.comics.length.toString().padStart(4, '0')
+            ? true
+            : false
+        "
+        :isFirst="comicID === '0001' ? true : false"
+        :lastComic="store.latestComicPostID"
       ></ComicControls>
     </div>
     <LinkBoxes></LinkBoxes>
@@ -14,33 +23,30 @@
 </template>
 
 <script setup>
-// @ is an alias to /src
+import { ref } from "vue";
 import { useRoute } from "vue-router";
-import ComicContent from "@/components/ComicContent.vue";
 import ComicControls from "@/components/ComicControls.vue";
 import LinkBoxes from "@/components/LinkBoxes.vue";
-import { useComicContent } from "@/composables/comicContent";
-import router from "@/router";
+import MainMenu from "@/components/MainMenu.vue";
+import { useComicContentStore } from "@/stores/comics";
+import ComicContent from "@/components/ComicContent.vue";
 
-const route = useRoute(),
-  comicID = route.params.id,
-  nextComic = (+comicID + 1).toString().padStart(3, "0"),
-  prevComic = (+comicID - 1).toString().padStart(3, "0");
+/* store setup */
+const store = useComicContentStore();
 
-let isLast = false,
-  isFirst = false;
+/* route */
+const route = useRoute();
 
-if (prevComic === "000") {
-  isFirst = true;
+/* set useComicContent */
+
+/* get current comicID */
+let comicID = ref(route.params.id);
+
+if (!route.params.id) {
+  comicID = store.latestComicPostID;
 }
 
-const comicContent = useComicContent();
-const currentComicContent = comicContent.find((comic) => comic.id === comicID);
-
-if (nextComic === (+comicContent.length + 1).toString().padStart(3, "0")) {
-  isLast = true;
-  router.push({ path: "/" });
-}
+/* width */
 </script>
 
 <style scoped>

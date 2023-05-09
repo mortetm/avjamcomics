@@ -1,15 +1,27 @@
 <template>
-  <footer>AVJAMComics 2023</footer>
+  <footer>
+    <SocialLinks></SocialLinks>
+    <div>© AVJAMComics 2023 | Comics | Contact</div>
+  </footer>
 </template>
+
+<script setup>
+import SocialLinks from "@/components/SocialLinks.vue";
+</script>
 
 <style scoped>
 footer {
-  position: absolute;
-  bottom: 0;
   padding: 10px 0 20px 0;
   width: 100%;
   background-color: white;
   font-weight: bold;
   font-size: 12px;
+  margin-top: 50px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
 }
 </style>

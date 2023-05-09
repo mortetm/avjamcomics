@@ -1,21 +1,23 @@
 <template>
   <div>
-    <router-link :class="{ disabled: isFirst }" :to="`/comic/001`"
-      >&lt;&lt;</router-link
+    <router-link :class="{ disabled: isFirst }" :to="`/comic/0001`"
+      >&lt;&lt; First</router-link
     >
     <router-link :class="{ disabled: isFirst }" :to="`/comic/${props.prev}`"
-      >&lt;</router-link
+      >&lt; {{ !isFirst ? props.prev : "Prev" }}</router-link
     >
     <router-link :class="{ disabled: isLast }" :to="`/comic/${props.next}`"
-      >&gt;</router-link
+      >{{ !isLast ? props.next : "Next" }} &gt;</router-link
     >
-    <router-link :class="{ disabled: isLast }" :to="`/`">&gt;&gt;</router-link>
+    <router-link :class="{ disabled: isLast }" :to="`/comic/${props.lastComic}`"
+      >Last &gt;&gt;</router-link
+    >
   </div>
 </template>
 
 <script setup>
 import { defineProps } from "vue";
-const props = defineProps(["prev", "next", "isLast", "isFirst"]);
+const props = defineProps(["prev", "next", "isLast", "isFirst", "lastComic"]);
 </script>
 
 <style scoped>
@@ -24,9 +26,12 @@ div {
   justify-content: space-between;
   max-width: 80%;
   margin: 0 auto;
+  font-size: 28px;
 }
-span {
-  font-size: 2rem;
+
+div a {
+  text-decoration: none;
+  color: inherit;
 }
 
 .disabled {

@@ -1,21 +1,46 @@
 <template>
-  <MainMenu></MainMenu>
-  <router-view :key="$route.path" />
+  <Suspense>
+    <div v-if="store.latestComicPostID">
+      <router-view :key="$route.path" />
+    </div>
+    <template #fallback> ...Loading </template>
+  </Suspense>
+
   <FooterContent></FooterContent>
 </template>
 
 <script setup>
-import MainMenu from "@/components/MainMenu.vue";
 import FooterContent from "@/components/FooterContent.vue";
+import { useComicContentStore } from "./stores/comics";
+
+/* store setup */
+const store = useComicContentStore();
+
+/* call the API on mounted hook*/
+store.fetchComics();
 </script>
 
 <style>
+@font-face {
+  font-family: "AVJAMFB";
+  src: url("./assets/fonts/AVJAMFB.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "AVJAMFR";
+  src: url("./assets/fonts/AVJAMFR.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: AVJAMFB, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: #324458;
 }
 
 h1 {

@@ -1,13 +1,19 @@
 <template>
   <nav>
-    <router-link to="/"><img src="@/assets/logo.png" /></router-link>
+    <router-link to="/latest"><img src="@/assets/logo.png" /></router-link>
     <div>
-      <router-link to="/">Latest</router-link> |
+      <router-link :to="`/comic/${props.lastComic}`">Latest</router-link> |
       <router-link to="/about">About</router-link> |
-      <router-link to="/contact">Contact</router-link>
+      <router-link to="/contact">Contact</router-link> |
+      <router-link to="/">Other Comics</router-link>
     </div>
   </nav>
 </template>
+
+<script setup>
+import { defineProps } from "vue";
+const props = defineProps(["lastComic"]);
+</script>
 
 <style scoped>
 img {
@@ -26,6 +32,7 @@ nav a {
   font-weight: bold;
   color: #2c3e50;
   text-decoration: none;
+  font-size: 20px;
 }
 
 nav a.router-link-exact-active {

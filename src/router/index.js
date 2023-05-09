@@ -1,13 +1,19 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/HomeView.vue";
+// import HomeView from "../views/HomeView.vue";
 import ContactUsView from "../views/ContactUsView.vue";
 import ComicView from "../views/ComicView.vue";
+import HomeView from "../views/HomeView.vue";
 
 const routes = [
   {
     path: "/",
     name: "home",
     component: HomeView,
+  },
+  {
+    path: "/latest",
+    name: "latestcomic",
+    component: ComicView,
   },
   {
     path: "/comic/:id",
