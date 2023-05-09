@@ -1,10 +1,23 @@
 <template>
-  <router-view :key="$route.path" />
+  <Suspense>
+    <div v-if="store.latestComicPostID">
+      <router-view :key="$route.path" />
+    </div>
+    <template #fallback> ...Loading </template>
+  </Suspense>
+
   <FooterContent></FooterContent>
 </template>
 
 <script setup>
 import FooterContent from "@/components/FooterContent.vue";
+import { useComicContentStore } from "./stores/comics";
+
+/* store setup */
+const store = useComicContentStore();
+
+/* call the API on mounted hook*/
+store.fetchComics();
 </script>
 
 <style>

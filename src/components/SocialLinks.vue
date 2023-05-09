@@ -1,8 +1,8 @@
 <template>
   <div>
-    <span>Share on:</span>
-    <a href="facebook.com">F</a> <a href="twitter.com">T</a>
-    <a href="instagram.com">I</a>
+    <img src="../assets/social/facebook.jpg" />
+    <img src="../assets/social/twitter.jpg" />
+    <img src="../assets/social/insta.jpg" />
   </div>
 </template>
 
@@ -18,5 +18,14 @@ span {
 }
 a {
   padding: 5px;
+}
+img {
+  max-height: 22px;
+}
+
+div {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
 }
 </style>

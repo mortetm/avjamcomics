@@ -1,14 +1,21 @@
 <template>
-  <MainMenu></MainMenu>
-
-  <div class="page">
+  <div class="page" v-if="store.comics.length > 0">
+    <MainMenu :lastComic="store.latestComicPostID"></MainMenu>
     <div class="home">
-      <ComicContent :comicContent="currentComicContent"></ComicContent>
+      <ComicContent
+        :comicContent="store.comics.find((comic) => comic.post_id === comicID)"
+      ></ComicContent>
+      {{ store.comics.length.toString().padStart(4, "0") }}
       <ComicControls
-        :prev="prevComic"
-        :next="nextComic"
-        :isLast="isLast"
-        :isFirst="isFirst"
+        :prev="(+comicID - 1).toString().padStart(4, '0')"
+        :next="(+comicID + 1).toString().padStart(4, '0')"
+        :isLast="
+          comicID === store.comics.length.toString().padStart(4, '0')
+            ? true
+            : false
+        "
+        :isFirst="comicID === '0001' ? true : false"
+        :lastComic="store.latestComicPostID"
       ></ComicControls>
     </div>
     <LinkBoxes></LinkBoxes>
@@ -16,56 +23,27 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
+import { ref } from "vue";
 import { useRoute } from "vue-router";
-import { useComicContent } from "@/composables/comicContent";
-import axios from "axios";
-import ComicContent from "@/components/ComicContent.vue";
 import ComicControls from "@/components/ComicControls.vue";
 import LinkBoxes from "@/components/LinkBoxes.vue";
-import router from "@/router";
 import MainMenu from "@/components/MainMenu.vue";
+import { useComicContentStore } from "@/stores/comics";
+import ComicContent from "@/components/ComicContent.vue";
+
+/* store setup */
+const store = useComicContentStore();
 
 /* route */
-
 const route = useRoute();
-let comicID = route.params.id;
-
-/* AXIOS call to API */
-const fetchComics = () => {
-  axios
-    .get("https://avjam.xyz/avjamcomics/wp-json/wp/v2/posts")
-    .then((response) => {
-      console.log("comics", response.data[0]);
-    });
-};
-
-onMounted(fetchComics);
 
 /* set useComicContent */
 
-const { comicContent, latestComic } = useComicContent();
+/* get current comicID */
+let comicID = ref(route.params.id);
 
-/* if route id = undefined, default to last comic */
-if (!comicID) {
-  comicID = latestComic;
-}
-
-const nextComic = (+comicID + 1).toString().padStart(4, "0"),
-  prevComic = (+comicID - 1).toString().padStart(4, "0");
-const currentComicContent = comicContent.find((comic) => comic.id === comicID);
-/* comic */
-
-let isLast = false,
-  isFirst = false;
-
-if (prevComic === "0000") {
-  isFirst = true;
-}
-
-if (currentComicContent.id === latestComic) {
-  isLast = true;
-  router.push({ path: "/latest" });
+if (!route.params.id) {
+  comicID = store.latestComicPostID;
 }
 
 /* width */

@@ -2,13 +2,18 @@
   <nav>
     <router-link to="/latest"><img src="@/assets/logo.png" /></router-link>
     <div>
-      <router-link to="/latest">Latest</router-link> |
+      <router-link :to="`/comic/${props.lastComic}`">Latest</router-link> |
       <router-link to="/about">About</router-link> |
       <router-link to="/contact">Contact</router-link> |
       <router-link to="/">Other Comics</router-link>
     </div>
   </nav>
 </template>
+
+<script setup>
+import { defineProps } from "vue";
+const props = defineProps(["lastComic"]);
+</script>
 
 <style scoped>
 img {

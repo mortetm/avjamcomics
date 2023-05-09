@@ -1,16 +1,18 @@
 <template>
   <header>
-    <h1>{{ props.comicContent.id }} - {{ props.comicContent.name }}</h1>
-    <SocialLinks>test</SocialLinks>
+    <h1>
+      {{ props.comicContent.post_id }} -
+      {{ props.comicContent.title.rendered }}
+    </h1>
+    <SocialLinks></SocialLinks>
   </header>
-
   <article v-if="isStrip === true">
-    <img class="comic-strip" :src="props.comicContent.image" />
+    <img class="comic-strip" :src="props.comicContent.strip_image" />
   </article>
 
   <article v-else>
     <carousel :items-to-show="1">
-      <slide v-for="img in props.comicContent.slides" :key="img">
+      <slide v-for="img in props.comicContent.panels.split(' ')" :key="img">
         <img class="comic-strip" :src="img" />
       </slide>
     </carousel>
@@ -42,6 +44,7 @@ onUnmounted(() => {
 });
 
 const resizeHandler = () => {
+  console.log(props);
   if (window.innerWidth > 768) {
     isStrip.value = true;
   } else {
