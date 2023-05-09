@@ -9,7 +9,7 @@
     <router-link :class="{ disabled: isLast }" :to="`/comic/${props.next}`"
       >{{ !isLast ? props.next : "Next" }} &gt;</router-link
     >
-    <router-link :class="{ disabled: isLast }" :to="`/latest`"
+    <router-link :class="{ disabled: isLast }" :to="`/comic/${props.lastComic}`"
       >Last &gt;&gt;</router-link
     >
   </div>
@@ -17,7 +17,7 @@
 
 <script setup>
 import { defineProps } from "vue";
-const props = defineProps(["prev", "next", "isLast", "isFirst"]);
+const props = defineProps(["prev", "next", "isLast", "isFirst", "lastComic"]);
 </script>
 
 <style scoped>

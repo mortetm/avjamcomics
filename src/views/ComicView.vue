@@ -1,20 +1,21 @@
-<!--
-// import { useComicContent } from "@/composables/comicContent";
-// import ComicContent from "@/components/ComicContent.vue";
-// import router from "@/router";
--->
 <template>
-  <MainMenu></MainMenu>
-
-  <div class="page" v-if="!isLoading">
-    test
+  <div class="page" v-if="store.comics.length > 0">
+    <MainMenu :lastComic="store.latestComicPostID"></MainMenu>
     <div class="home">
-      <!-- <ComicContent :comicContent="currentComicContent"></ComicContent> -->
+      <ComicContent
+        :comicContent="store.comics.find((comic) => comic.post_id === comicID)"
+      ></ComicContent>
+      {{ store.comics.length.toString().padStart(4, "0") }}
       <ComicControls
-        :prev="prevComic"
-        :next="nextComic"
-        :isLast="isLast"
-        :isFirst="isFirst"
+        :prev="(+comicID - 1).toString().padStart(4, '0')"
+        :next="(+comicID + 1).toString().padStart(4, '0')"
+        :isLast="
+          comicID === store.comics.length.toString().padStart(4, '0')
+            ? true
+            : false
+        "
+        :isFirst="comicID === '0001' ? true : false"
+        :lastComic="store.latestComicPostID"
       ></ComicControls>
     </div>
     <LinkBoxes></LinkBoxes>
@@ -22,56 +23,28 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from "vue";
+import { ref } from "vue";
 import { useRoute } from "vue-router";
 import ComicControls from "@/components/ComicControls.vue";
 import LinkBoxes from "@/components/LinkBoxes.vue";
 import MainMenu from "@/components/MainMenu.vue";
 import { useComicContentStore } from "@/stores/comics";
-
-let isLoading = ref(null);
+import ComicContent from "@/components/ComicContent.vue";
 
 /* store setup */
 const store = useComicContentStore();
 
-let latestComic = computed(() => {
-  return store.getLatestComic;
-});
-
-onMounted(() => {
-  isLoading = store.loading;
-});
 /* route */
 const route = useRoute();
-let comicID = route.params.id;
 
 /* set useComicContent */
 
-/* if route id = undefined, default to last comic */
-if (!comicID) {
-  comicID = latestComic.value;
+/* get current comicID */
+let comicID = ref(route.params.id);
+
+if (!route.params.id) {
+  comicID = store.latestComicPostID;
 }
-
-console.log(store.comics);
-const nextComic = (+comicID + 1).toString().padStart(4, "0"),
-  prevComic = (+comicID - 1).toString().padStart(4, "0");
-const currentComicContent = store.comics.find((comic) => comic.id === comicID);
-/* comic */
-
-let isLast = false,
-  isFirst = false;
-
-if (prevComic === "0000") {
-  isFirst = true;
-}
-
-console.log("IN THE WILD", store.comics);
-console.log(currentComicContent);
-
-// if (currentComicContent.id === latestComic) {
-//   isLast = true;
-//   router.push({ path: "/latest" });
-// }
 
 /* width */
 </script>

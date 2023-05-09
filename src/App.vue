@@ -1,5 +1,11 @@
 <template>
-  <router-view :key="$route.path" />
+  <Suspense>
+    <div v-if="store.latestComicPostID">
+      <router-view :key="$route.path" />
+    </div>
+    <template #fallback> ...Loading </template>
+  </Suspense>
+
   <FooterContent></FooterContent>
 </template>
 
@@ -11,7 +17,6 @@ import { useComicContentStore } from "./stores/comics";
 const store = useComicContentStore();
 
 /* call the API on mounted hook*/
-
 store.fetchComics();
 </script>
 
