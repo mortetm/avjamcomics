@@ -5,7 +5,6 @@
       <ComicContent
         :comicContent="store.comics.find((comic) => comic.post_id === comicID)"
       ></ComicContent>
-      {{ store.comics.length.toString().padStart(4, "0") }}
       <ComicControls
         :prev="(+comicID - 1).toString().padStart(4, '0')"
         :next="(+comicID + 1).toString().padStart(4, '0')"
