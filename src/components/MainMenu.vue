@@ -8,7 +8,7 @@
     <div class="main-menu">
       <router-link :to="`/comic/${props.lastComic}`">Latest</router-link> |
       <router-link to="/about">About</router-link> |
-      <router-link to="/contact">Contact</router-link> |
+      <router-link to="/shop">Shop</router-link> |
       <router-link to="/">Other Comics</router-link>
     </div>
   </nav>
