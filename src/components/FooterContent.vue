@@ -3,7 +3,7 @@
     <SocialLinks></SocialLinks>
     <div>
       © AVJAMComics 2023 | <router-link to="/">All Comics</router-link> |
-      <router-link to="/contact">Contact</router-link> |
+      <router-link to="/shop">Shop</router-link> |
     </div>
   </footer>
 </template>

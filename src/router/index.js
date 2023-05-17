@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 // import HomeView from "../views/HomeView.vue";
-import ContactUsView from "../views/ContactUsView.vue";
+import ShopView from "../views/ShopView.vue";
 import ComicView from "../views/ComicView.vue";
 import HomeView from "../views/HomeView.vue";
 
@@ -11,15 +11,33 @@ const routes = [
     component: HomeView,
   },
   {
-    path: "/latest",
-    name: "latestcomic",
+    path: "/:comic",
+    name: "tourbunny",
     component: ComicView,
+
+    children: [
+      {
+        path: "latest",
+        name: "latestcomic",
+        component: ComicView,
+      },
+      {
+        path: "comic/:id",
+        name: "comic",
+        component: ComicView,
+      },
+    ],
   },
-  {
-    path: "/comic/:id",
-    name: "comic",
-    component: ComicView,
-  },
+  // {
+  //   path: "/latest",
+  //   name: "latestcomic",
+  //   component: ComicView,
+  // },
+  // {
+  //   path: "/comic/:id",
+  //   name: "comic",
+  //   component: ComicView,
+  // },
   {
     path: "/about",
     name: "about",
@@ -29,9 +47,9 @@ const routes = [
     component: () => import("../views/AboutView.vue"),
   },
   {
-    path: "/contact",
-    name: "contact",
-    component: ContactUsView,
+    path: "/shop",
+    name: "shop",
+    component: ShopView,
   },
 ];
 

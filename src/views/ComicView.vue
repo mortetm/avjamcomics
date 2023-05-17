@@ -1,15 +1,17 @@
 <template>
-  <div class="page" v-if="store.comics.length > 0">
+  <div class="page" v-if="store.filteredComics.length > 0">
     <MainMenu :lastComic="store.latestComicPostID"></MainMenu>
     <div class="home">
       <ComicContent
-        :comicContent="store.comics.find((comic) => comic.post_id === comicID)"
+        :comicContent="
+          store.filteredComics.find((comic) => comic.post_id === comicID)
+        "
       ></ComicContent>
       <ComicControls
         :prev="(+comicID - 1).toString().padStart(4, '0')"
         :next="(+comicID + 1).toString().padStart(4, '0')"
         :isLast="
-          comicID === store.comics.length.toString().padStart(4, '0')
+          comicID === store.filteredComics.length.toString().padStart(4, '0')
             ? true
             : false
         "
@@ -40,6 +42,9 @@ const route = useRoute();
 
 /* get current comicID */
 let comicID = ref(route.params.id);
+let chosenComic = ref(route.params.comic);
+
+store.filterComics(chosenComic.value);
 
 if (!route.params.id) {
   comicID = store.latestComicPostID;

@@ -2,19 +2,19 @@
   <!-- <h1 class="border">ÁVJAM Comics</h1> -->
   <nav>
     <div class="img">
-      <router-link to="/latest" class="nav-top" href="#">
+      <router-link to="/ttb/latest" class="nav-top" href="#">
         <img class="original_img" src="../assets/homepage/top.png" />
         <img class="hover_img" src="../assets/homepage/top-hov.png" />
       </router-link>
     </div>
     <div class="img">
-      <router-link to="/latest" class="nav-mid" href="#">
+      <router-link to="/thbc/latest" class="nav-mid" href="#">
         <img class="original_img" src="../assets/homepage/middle.png" />
         <img class="hover_img" src="../assets/homepage/middle-hov.png" />
       </router-link>
     </div>
     <div class="img">
-      <router-link to="/latest" class="nav-bot" href="#">
+      <router-link to="/dlc/latest" class="nav-bot" href="#">
         <img class="original_img" src="../assets/homepage/bottom.png" />
         <img class="hover_img" src="../assets/homepage/bottom-hov.png" />
       </router-link>
@@ -66,9 +66,6 @@ img {
 }
 .img:hover .hover_img {
   display: inline;
-}
-
-.img:hover .original_img {
 }
 
 .border-thick {
