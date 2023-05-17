@@ -11,15 +11,33 @@ const routes = [
     component: HomeView,
   },
   {
-    path: "/latest",
-    name: "latestcomic",
+    path: "/:comic",
+    name: "tourbunny",
     component: ComicView,
+
+    children: [
+      {
+        path: "latest",
+        name: "latestcomic",
+        component: ComicView,
+      },
+      {
+        path: "comic/:id",
+        name: "comic",
+        component: ComicView,
+      },
+    ],
   },
-  {
-    path: "/comic/:id",
-    name: "comic",
-    component: ComicView,
-  },
+  // {
+  //   path: "/latest",
+  //   name: "latestcomic",
+  //   component: ComicView,
+  // },
+  // {
+  //   path: "/comic/:id",
+  //   name: "comic",
+  //   component: ComicView,
+  // },
   {
     path: "/about",
     name: "about",
