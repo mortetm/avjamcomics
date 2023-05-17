@@ -1,13 +1,26 @@
 <template>
   <nav>
-    <router-link to="/latest">
+    <router-link :to="`/${chosenComic}/latest`">
       <div class="main-menu-logo">
-        <img src="@/assets/logo.png" />
+        <img v-if="store.chosenComic === 'ttb'" src="@/assets/logo-ttb.png" />
+        <img
+          v-else-if="store.chosenComic === 'thbc'"
+          src="@/assets/logo-thbc.png"
+        />
+        <img
+          v-else-if="store.chosenComic === 'dlc' && !store.isColor"
+          src="@/assets/logo-dlc.png"
+        />
+        <img
+          v-else-if="store.chosenComic === 'dlc' && store.isColor"
+          src="@/assets/logo-dlc-color.png"
+        />
+        <img v-else src="@/assets/logo.png" />
       </div>
     </router-link>
     <div class="main-menu">
-      <router-link :to="`/comic/${props.lastComic}`">Latest</router-link> |
-      <router-link to="/about">About</router-link> |
+      <router-link :to="`/${chosenComic}/latest`">Latest</router-link>
+      | <router-link to="/about">About</router-link> |
       <router-link to="/shop">Shop</router-link> |
       <router-link to="/">Other Comics</router-link>
     </div>
@@ -15,13 +28,16 @@
 </template>
 
 <script setup>
-import { defineProps } from "vue";
-const props = defineProps(["lastComic"]);
+import { useComicContentStore } from "@/stores/comics";
+
+/* store setup */
+const store = useComicContentStore();
+const chosenComic = store.chosenComic;
 </script>
 
 <style scoped>
 img {
-  max-width: 200px;
+  max-width: 250px;
 }
 
 nav {

@@ -1,6 +1,6 @@
 <template>
   <div v-if="!store.latestComicPostID">
-    <div class="loading">... Loading</div>
+    <div class="loading">Loading ...</div>
   </div>
 
   <div v-if="store.latestComicPostID">

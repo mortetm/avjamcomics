@@ -1,15 +1,23 @@
 <template>
   <div>
-    <router-link :class="{ disabled: isFirst }" :to="`/comic/0001`"
+    <router-link
+      :class="{ disabled: isFirst }"
+      :to="`/${chosenComic}/comic/0001`"
       >&lt;&lt; First</router-link
     >
-    <router-link :class="{ disabled: isFirst }" :to="`/comic/${props.prev}`"
+    <router-link
+      :class="{ disabled: isFirst }"
+      :to="`/${chosenComic}/comic/${props.prev}`"
       >&lt; {{ !isFirst ? props.prev : "Prev" }}</router-link
     >
-    <router-link :class="{ disabled: isLast }" :to="`/comic/${props.next}`"
+    <router-link
+      :class="{ disabled: isLast }"
+      :to="`/${chosenComic}/comic/${props.next}`"
       >{{ !isLast ? props.next : "Next" }} &gt;</router-link
     >
-    <router-link :class="{ disabled: isLast }" :to="`/comic/${props.lastComic}`"
+    <router-link
+      :class="{ disabled: isLast }"
+      :to="`/${chosenComic}/comic/${props.lastComic}`"
       >Last &gt;&gt;</router-link
     >
   </div>
@@ -17,6 +25,11 @@
 
 <script setup>
 import { defineProps } from "vue";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
+const chosenComic = route.params.comic;
+
 const props = defineProps(["prev", "next", "isLast", "isFirst", "lastComic"]);
 </script>
 
