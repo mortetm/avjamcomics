@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import SocialLinks from "@/components/SocialLinks.vue";
+import SocialLinks from "@/components/base/SocialLinks.vue";
 </script>
 
 <style scoped>

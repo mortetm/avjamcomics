@@ -53,7 +53,7 @@ export const useComicContentStore = defineStore("comicContent", {
     },
 
     checkUserPrefs() {
-      if (localStorage.getItem("comicIsColor") === true) {
+      if (localStorage.getItem("comicIsColor") === "true") {
         this.isColor = true;
       } else {
         this.isColor = false;

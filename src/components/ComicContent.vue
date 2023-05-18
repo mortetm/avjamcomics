@@ -9,30 +9,24 @@
       <SocialLinks></SocialLinks>
     </div>
   </header>
-  <article v-if="isStrip">
-    <img class="comic-strip" :src="props.comicContent.strip_image" />
-  </article>
 
-  <article v-else-if="!isStrip">
-    <carousel :items-to-show="1">
-      <slide v-for="img in props.comicContent.panels.split(' ')" :key="img">
-        <img class="comic-strip" :src="img" />
-      </slide>
-    </carousel>
-  </article>
+  <SingleComicStrip
+    v-if="isStrip"
+    :comicContent="props.comicContent"
+  ></SingleComicStrip>
 
-  <div v-if="isStrip === false">
-    <img class="swipe-to-read" src="../assets/temp-assets/swipe.jpg" />
-  </div>
+  <SingleCarousel v-else-if="!isStrip" :comicContent="props.comicContent">
+  </SingleCarousel>
 </template>
 
 <script setup>
 import { ref, defineProps, onMounted, onUnmounted } from "vue";
-import SocialLinks from "@/components/SocialLinks.vue";
+import SocialLinks from "@/components/base/SocialLinks.vue";
 import "vue3-carousel/dist/carousel.css";
-import { Carousel, Slide } from "vue3-carousel";
 import ColorSwitcher from "./ColorSwitcher.vue";
 import { useComicContentStore } from "@/stores/comics";
+import SingleComicStrip from "./base/SingleComicStrip.vue";
+import SingleCarousel from "./base/SingleCarousel.vue";
 
 /* store setup */
 const store = useComicContentStore();
@@ -52,7 +46,6 @@ onUnmounted(() => {
 });
 
 const resizeHandler = () => {
-  console.log(props);
   if (window.innerWidth > 768) {
     isStrip.value = true;
   } else {
@@ -62,14 +55,6 @@ const resizeHandler = () => {
 </script>
 
 <style scoped>
-.comic-strip {
-  max-width: 100%;
-}
-
-.swipe-to-read {
-  max-width: 250px;
-}
-
 h1 {
   text-align: left;
   padding-left: 3%;
