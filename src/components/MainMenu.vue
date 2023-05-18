@@ -21,7 +21,7 @@
     <div class="main-menu">
       <router-link :to="`/${chosenComic}/latest`">Latest</router-link>
       | <router-link to="/about">About</router-link> |
-      <router-link to="/shop">Shop</router-link> |
+      <!-- <router-link to="/shop">Shop</router-link> | -->
       <router-link to="/">Other Comics</router-link>
     </div>
   </nav>
@@ -48,7 +48,6 @@ nav {
   justify-content: space-between;
   align-items: flex-end;
   max-width: calc(1024px - 5%);
-  margin: 0 auto;
   padding: 30px 3%;
 }
 

@@ -27,17 +27,26 @@ import ColorSwitcher from "./ColorSwitcher.vue";
 import { useComicContentStore } from "@/stores/comics";
 import SingleComicStrip from "./base/SingleComicStrip.vue";
 import SingleCarousel from "./base/SingleCarousel.vue";
+import { useRoute, useRouter } from "vue-router";
 
-/* store setup */
-const store = useComicContentStore();
+const route = useRoute();
+const router = useRouter();
+const comicID = ref(route.params.id);
 
 const props = defineProps({
   comicContent: Object,
 });
-
 const isStrip = ref(true);
 
+/* store setup */
+const store = useComicContentStore();
+
 onMounted(() => {
+  // move the user to /latest so that it is
+  // highlighted in the menu if it's the latest comic
+  if (comicID.value === store.latestComicPostID) {
+    router.push({ path: `/${store.chosenComic}/latest` });
+  }
   resizeHandler();
   window.addEventListener("resize", resizeHandler);
 });
