@@ -48,7 +48,7 @@ nav {
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-end;
-  max-width: calc(1024px - 5%);
+  max-width: 1024px;
   margin: 0 auto;
   padding: 30px 3%;
 }
