@@ -21,6 +21,12 @@ store.fetchComics();
 </script>
 
 <style>
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 @font-face {
   font-family: "AVJAMFB";
   src: url("./assets/fonts/AVJAMFB.ttf") format("truetype");
