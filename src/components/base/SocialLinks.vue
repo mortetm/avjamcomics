@@ -1,8 +1,8 @@
 <template>
   <div>
-    <a href="#" target="_blank"><img src="../assets/social/facebook.jpg" /></a>
-    <a href="#" target="_blank"><img src="../assets/social/twitter.jpg" /></a>
-    <a href="#" target="_blank"><img src="../assets/social/insta.jpg" /></a>
+    <a href="#" target="_blank"><img src="@/assets/social/facebook.jpg" /></a>
+    <a href="#" target="_blank"><img src="@/assets/social/twitter.jpg" /></a>
+    <a href="#" target="_blank"><img src="@/assets/social/insta.jpg" /></a>
   </div>
 </template>
 
