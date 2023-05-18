@@ -33,6 +33,9 @@ import { useComicContentStore } from "@/stores/comics";
 /* store setup */
 const store = useComicContentStore();
 const chosenComic = store.chosenComic;
+
+// route on before routing check if latestComic = target comic, if yes,
+// transfer the user to /comicID/LATEST instead of /000X
 </script>
 
 <style scoped>
