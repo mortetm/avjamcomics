@@ -3,7 +3,7 @@
     <div class="loading">Loading ...</div>
   </div>
 
-  <div v-if="store.latestComicPostID">
+  <div v-if="store.latestComicPostID" class="main-view">
     <router-view :key="$route.path" />
     <FooterContent></FooterContent>
   </div>
@@ -64,5 +64,12 @@ a:hover {
   align-items: center;
   justify-content: center;
   font-size: 32px;
+}
+
+.main-view {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 97vh;
 }
 </style>

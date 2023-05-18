@@ -13,7 +13,7 @@ const routes = [
   },
   {
     path: "/:comic",
-    name: "tourbunny",
+    name: "comicid",
     component: ComicView,
 
     children: [
