@@ -15,9 +15,7 @@
       :to="`/${chosenComic}/comic/${props.next}`"
       >{{ !isLast ? props.next : "Next" }} &gt;</router-link
     >
-    <router-link
-      :class="{ disabled: isLast }"
-      :to="`/${chosenComic}/comic/${props.lastComic}`"
+    <router-link :class="{ disabled: isLast }" :to="`/${chosenComic}/latest`"
       >Last &gt;&gt;</router-link
     >
   </div>
