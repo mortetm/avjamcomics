@@ -1,6 +1,9 @@
 <template>
-  <div v-if="!store.latestComicPostID">
-    <div class="loading">Loading ...</div>
+  <div class="loading" v-if="!store.latestComicPostID">
+    <div>
+      <img class="loading-img" src="../src/assets/homepage/loading.gif" />
+    </div>
+    <div class="loading-text">Loading ...</div>
   </div>
 
   <div v-if="store.latestComicPostID" class="main-view">
@@ -65,7 +68,14 @@ a:hover {
 }
 
 .loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   height: 90vh;
+}
+
+.loading-text {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -77,5 +87,19 @@ a:hover {
   flex-direction: column;
   justify-content: space-between;
   min-height: 97vh;
+}
+
+.loading-img {
+  max-width: 140px;
+  animation: rotation 2s infinite linear;
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
 }
 </style>
