@@ -51,6 +51,7 @@ nav {
   max-width: 1024px;
   margin: 0 auto;
   padding: 30px 3%;
+  width: 100%;
 }
 
 nav a {
