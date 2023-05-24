@@ -1,10 +1,12 @@
 <template>
-  <MainMenu :lastComic="store.latestComicPostID"></MainMenu>
-  <div v-if="!store.latestComicPostID">
-    <div class="loading">... Loading</div>
-  </div>
-  <div class="about">
-    <h1>This is a store page</h1>
+  <div class="page">
+    <MainMenu :lastComic="store.latestComicPostID"></MainMenu>
+    <div v-if="!store.latestComicPostID">
+      <div class="loading">... Loading</div>
+    </div>
+    <div class="about">
+      <h1>This is a store page</h1>
+    </div>
   </div>
 </template>
 

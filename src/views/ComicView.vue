@@ -52,10 +52,3 @@ if (!route.params.id) {
 
 /* width */
 </script>
-
-<style scoped>
-.page {
-  max-width: 1024px;
-  margin: 0 auto;
-}
-</style>

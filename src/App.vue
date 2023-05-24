@@ -102,4 +102,10 @@ a:hover {
     transform: rotate(359deg);
   }
 }
+
+.page {
+  max-width: 1024px;
+  margin: 0 auto;
+  width: 100%;
+}
 </style>
