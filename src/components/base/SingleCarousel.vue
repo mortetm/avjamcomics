@@ -4,15 +4,12 @@
       :items-to-show="1"
       v-if="store.isColor && store.chosenComic === 'dl'"
     >
-      <slide
-        v-for="img in props.comicContent.panels_color.split(' ')"
-        :key="img"
-      >
+      <slide v-for="img in store.images.panelsColor" v-bind:key="img">
         <img class="comic-strip" :src="img" />
       </slide>
     </carousel>
-    <carousel :items-to-show="1" v-else>
-      <slide v-for="img in props.comicContent.panels.split(' ')" :key="img">
+    <carousel :items-to-show="1">
+      <slide v-for="img in store.images.panels" v-bind:key="img">
         <img class="comic-strip" :src="img" />
       </slide>
     </carousel>
@@ -26,14 +23,9 @@
 <script setup>
 import { Carousel, Slide } from "vue3-carousel";
 import { useComicContentStore } from "@/stores/comics";
-import { defineProps } from "vue";
 
 /* store setup */
 const store = useComicContentStore();
-
-const props = defineProps({
-  comicContent: Object,
-});
 </script>
 
 <style scoped>

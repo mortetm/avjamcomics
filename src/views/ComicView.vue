@@ -50,5 +50,10 @@ if (!route.params.id) {
   comicID = store.latestComicPostID;
 }
 
+if (route.params.id) {
+  store.generateImages(comicID.value);
+} else if (!route.params.id) {
+  store.generateImages(comicID);
+}
 /* width */
 </script>

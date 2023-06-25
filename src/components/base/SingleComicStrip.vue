@@ -3,22 +3,17 @@
     <img
       v-if="store.isColor && store.chosenComic === 'dl'"
       class="comic-strip"
-      :src="props.comicContent.strip_image_color"
+      :src="store.images.stripColor"
     />
-    <img v-else class="comic-strip" :src="props.comicContent.strip_image" />
+    <img v-else class="comic-strip" :src="store.images.strip" />
   </article>
 </template>
 
 <script setup>
 import { useComicContentStore } from "@/stores/comics";
-import { defineProps } from "vue";
 
 /* store setup */
 const store = useComicContentStore();
-
-const props = defineProps({
-  comicContent: Object,
-});
 </script>
 
 <style scoped>

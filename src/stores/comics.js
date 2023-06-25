@@ -4,15 +4,22 @@ import axios from "axios";
 export const useComicContentStore = defineStore("comicContent", {
   state: () => ({
     comics: [],
+    filteredComics: [],
     comic: null,
     loading: true,
     error: null,
     latestComic: null,
     latestComicPostID: null,
     chosenComic: null,
-    filteredComics: [],
-    chosenComicContent: [],
     isColor: true,
+    images: {
+      panels: [],
+      panelsColor: [],
+      strip: "",
+      stripColor: "",
+      share: "",
+      shareColor: "",
+    },
   }),
   getters: {
     getComics(state) {
@@ -23,8 +30,37 @@ export const useComicContentStore = defineStore("comicContent", {
     },
   },
   actions: {
+    generateImages(comicID) {
+      const urlCDN = "https://www.avjam.xyz/CDN/";
+      const comic = this.filteredComics.find((comic) => comic.id === comicID);
+      const count = comic.numberOfPanels;
+      let images = [];
+      const categoryUppercase = comic.category.toUpperCase();
+
+      // set b&w images
+      for (let i = 1; i <= count; i++) {
+        images.push(
+          `${urlCDN}/${categoryUppercase}-${comic.id}-panel-${i}.jpg`
+        );
+      }
+      this.images.share = `${urlCDN}/${categoryUppercase}-${comic.id}-share.jpg`;
+      this.images.strip = `${urlCDN}/${categoryUppercase}-${comic.id}-strip.jpg`;
+      this.images.panels = images;
+
+      // set color images
+      if (comic.isColor) {
+        for (let i = 1; i <= count; i++) {
+          images.push(
+            `${urlCDN}/${categoryUppercase}-${comic.id}-panel-${i}-c.jpg`
+          );
+        }
+        this.images.share = `${urlCDN}/${categoryUppercase}-${comic.id}-share-c.jpg`;
+        this.images.strip = `${urlCDN}/${categoryUppercase}-${comic.id}-strip-c.jpg`;
+        this.images.panels = images;
+      }
+    },
+
     async filterComics(category) {
-      console.log(category);
       this.filteredComics = this.comics.filter(
         (comic) => comic.category === category
       );
