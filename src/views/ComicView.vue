@@ -4,7 +4,7 @@
     <div class="home">
       <ComicContent
         :comicContent="
-          store.filteredComics.find((comic) => comic.post_id === comicID)
+          store.filteredComics.find((comic) => comic.id === comicID)
         "
       ></ComicContent>
       <ComicControls

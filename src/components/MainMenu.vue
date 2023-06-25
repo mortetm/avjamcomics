@@ -8,11 +8,11 @@
           src="@/assets/logo-thbc.png"
         />
         <img
-          v-else-if="store.chosenComic === 'dlc' && !store.isColor"
+          v-else-if="store.chosenComic === 'dl' && !store.isColor"
           src="@/assets/logo-dlc.png"
         />
         <img
-          v-else-if="store.chosenComic === 'dlc' && store.isColor"
+          v-else-if="store.chosenComic === 'dl' && store.isColor"
           src="@/assets/logo-dlc-color.png"
         />
         <img v-else src="@/assets/logo.png" />

@@ -2,7 +2,7 @@
   <article>
     <carousel
       :items-to-show="1"
-      v-if="store.isColor && store.chosenComic === 'dlc'"
+      v-if="store.isColor && store.chosenComic === 'dl'"
     >
       <slide
         v-for="img in props.comicContent.panels_color.split(' ')"

@@ -1,7 +1,7 @@
 <template>
   <article>
     <img
-      v-if="store.isColor && store.chosenComic === 'dlc'"
+      v-if="store.isColor && store.chosenComic === 'dl'"
       class="comic-strip"
       :src="props.comicContent.strip_image_color"
     />
