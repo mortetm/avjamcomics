@@ -12,6 +12,10 @@
 
 <script setup>
 import { useComicContentStore } from "@/stores/comics";
+import { useFavicon } from "@vueuse/core";
+
+/* icon */
+const icon = useFavicon();
 
 /* store setup */
 const store = useComicContentStore();
@@ -19,6 +23,11 @@ const store = useComicContentStore();
 function switchColor() {
   store.isColor = !store.isColor;
   localStorage.setItem("comicIsColor", store.isColor);
+  if (store.isColor) {
+    icon.value = `../favicon-${store.chosenComic}-c.png`;
+  } else {
+    icon.value = `../favicon-${store.chosenComic}.png`;
+  }
 }
 </script>
 
