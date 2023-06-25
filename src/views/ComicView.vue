@@ -4,7 +4,7 @@
     <div class="home">
       <ComicContent
         :comicContent="
-          store.filteredComics.find((comic) => comic.post_id === comicID)
+          store.filteredComics.find((comic) => comic.id === comicID)
         "
       ></ComicContent>
       <ComicControls
@@ -50,5 +50,10 @@ if (!route.params.id) {
   comicID = store.latestComicPostID;
 }
 
+if (route.params.id) {
+  store.generateImages(comicID.value);
+} else if (!route.params.id) {
+  store.generateImages(comicID);
+}
 /* width */
 </script>

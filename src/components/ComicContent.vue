@@ -1,11 +1,11 @@
 <template>
   <header>
     <h1>
-      {{ props.comicContent.post_id }} -
-      {{ props.comicContent.title.rendered }}
+      {{ props.comicContent.id }} -
+      {{ props.comicContent.title }}
     </h1>
     <div class="header-right">
-      <ColorSwitcher v-if="store.chosenComic === 'dlc'"></ColorSwitcher>
+      <ColorSwitcher v-if="store.chosenComic === 'dl'"></ColorSwitcher>
       <SocialLinks></SocialLinks>
     </div>
   </header>

@@ -20,7 +20,8 @@ import { useComicContentStore } from "./stores/comics";
 const store = useComicContentStore();
 
 /* call the API on mounted hook*/
-store.fetchComics();
+// store.fetchComics();
+store.fetchContent();
 </script>
 
 <style>

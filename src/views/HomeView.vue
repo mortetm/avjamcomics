@@ -14,7 +14,7 @@
       </router-link>
     </div>
     <div class="img">
-      <router-link to="/dlc/latest" class="nav-bot" href="#">
+      <router-link to="/dl/latest" class="nav-bot" href="#">
         <img class="original_img" src="../assets/homepage/bottom.png" />
         <img class="hover_img" src="../assets/homepage/bottom-hov.png" />
       </router-link>
