@@ -22,7 +22,32 @@
   </nav>
 </template>
 
-<script setup></script>
+<script setup>
+import { useHead } from "unhead";
+import { useComicContentStore } from "@/stores/comics";
+import { useFavicon } from "@vueuse/core";
+
+const store = useComicContentStore();
+
+useHead({
+  title: `AVJAM Comics`,
+  meta: [
+    {
+      property: "og:title",
+      content: `AVJAM Comics`,
+    },
+    {
+      property: "og:image",
+      content: store.images.ogshare,
+    },
+  ],
+});
+
+/* favicon */
+// set favicon depending on current comic family
+const icon = useFavicon();
+icon.value = `favicon.png`;
+</script>
 
 <style scoped>
 h1 {

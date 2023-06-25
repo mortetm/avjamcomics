@@ -31,14 +31,13 @@ import LinkBoxes from "@/components/LinkBoxes.vue";
 import MainMenu from "@/components/MainMenu.vue";
 import { useComicContentStore } from "@/stores/comics";
 import ComicContent from "@/components/ComicContent.vue";
+import { useFavicon } from "@vueuse/core";
 
 /* store setup */
 const store = useComicContentStore();
 
 /* route */
 const route = useRoute();
-
-/* set useComicContent */
 
 /* get current comicID */
 let comicID = ref(route.params.id);
@@ -55,5 +54,11 @@ if (route.params.id) {
 } else if (!route.params.id) {
   store.generateImages(comicID);
 }
+
+/* favicon */
+// set favicon depending on current comic family
+const icon = useFavicon();
+icon.value = `../favicon-${chosenComic.value}.png`;
+
 /* width */
 </script>

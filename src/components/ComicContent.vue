@@ -28,6 +28,7 @@ import { useComicContentStore } from "@/stores/comics";
 import SingleComicStrip from "./base/SingleComicStrip.vue";
 import SingleCarousel from "./base/SingleCarousel.vue";
 import { useRoute, useRouter } from "vue-router";
+import { useHead } from "unhead";
 
 const route = useRoute();
 const router = useRouter();
@@ -40,6 +41,24 @@ const isStrip = ref(true);
 
 /* store setup */
 const store = useComicContentStore();
+
+/* head: set title & meta for facebook sharing*/
+const comicFamily = store.comicFamily.find(
+  (comic) => comic.code === store.chosenComic
+);
+useHead({
+  title: `${props.comicContent.title} | ${comicFamily.name}`,
+  meta: [
+    {
+      property: "og:title",
+      content: `${props.comicContent.title} | ${comicFamily.name}`,
+    },
+    {
+      property: "og:image",
+      content: store.images.share,
+    },
+  ],
+});
 
 onMounted(() => {
   // move the user to /latest so that it is

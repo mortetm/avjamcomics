@@ -19,7 +19,13 @@ export const useComicContentStore = defineStore("comicContent", {
       stripColor: "",
       share: "",
       shareColor: "",
+      ogshare: "https://www.avjam.xyz/CDN/ogshare.png",
     },
+    comicFamily: [
+      { name: "The TourBunny", code: "ttb" },
+      { name: "The Hairball Chronicles", code: "thbc" },
+      { name: "Dark Lines", code: "dl" },
+    ],
   }),
   getters: {
     getComics(state) {
@@ -103,31 +109,5 @@ export const useComicContentStore = defineStore("comicContent", {
         console.error("Error fetching comic data:", error);
       }
     },
-
-    // async fetchComics() {
-    //   this.loading = true;
-    //   try {
-    //     await axios
-    //       .get(
-    //         "https://avjam.xyz/avjamcomics/wp-json/wp/v2/posts?acf_format=standard&_fields[]=title&_fields[]=post_id&_fields[]=slug&_fields[]=strip_image&_fields[]=share_image&_fields[]=panels&_fields[]=strip_image_color&_fields[]=share_image_color&_fields[]=panels_color&_fields[]=categories"
-    //       )
-    //       .then((response) => {
-    //         this.comics = response.data;
-    //         this.loading = false;
-    //         //default to The TourBunny Comic
-    //         this.filteredComics = this.comics.filter((comic) =>
-    //           comic.categories.includes(3)
-    //         );
-    //         this.latestComic = this.filteredComics[0];
-    //         this.latestComicPostID = this.filteredComics[0].post_id;
-    //         this.checkUserPrefs();
-    //       });
-    //   } catch (error) {
-    //     console.log("Error fetching comic data: ", error);
-    //   }
-    // },
   },
 });
-
-// ("https://cdn.contentful.com/spaces/3skqmxt0v2pl/environments/master/entries?access_token=kyohLP1ApLQksn_-g4ZJZaM4xgWGdoJonXuXNa5Zlyg&content_type=comic");
-// ("https://cdn.contentful.com/spaces/3skqmxt0v2pl/environments/master/content_types/comic?access_token=kyohLP1ApLQksn_-g4ZJZaM4xgWGdoJonXuXNa5Zlyg");
