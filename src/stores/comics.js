@@ -60,9 +60,9 @@ export const useComicContentStore = defineStore("comicContent", {
             `${urlCDN}/${categoryUppercase}-${comic.id}-panel-${i}-c.jpg`
           );
         }
-        this.images.share = `${urlCDN}/${categoryUppercase}-${comic.id}-share-c.jpg`;
-        this.images.strip = `${urlCDN}/${categoryUppercase}-${comic.id}-strip-c.jpg`;
-        this.images.panels = images;
+        this.images.shareColor = `${urlCDN}/${categoryUppercase}-${comic.id}-share-c.jpg`;
+        this.images.stripColor = `${urlCDN}/${categoryUppercase}-${comic.id}-strip-c.jpg`;
+        this.images.panelsColor = images;
       }
     },
 
