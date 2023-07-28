@@ -37,28 +37,35 @@ export const useComicContentStore = defineStore("comicContent", {
   },
   actions: {
     generateImages(comicID) {
-      const urlCDN = "https://www.avjam.xyz/CDN/",
-        comic = this.filteredComics.find((comic) => comic.id === comicID),
-        count = comic.numberOfPanels,
-        categoryUppercase = comic.category.toUpperCase();
-      let images = [],
-        imagesColor = [];
+      const urlCDN = "https://www.avjam.xyz/CDN";
+      const comic = this.filteredComics.find((comic) => comic.id === comicID);
+      const count = comic.numberOfPanels;
+      let images = [];
+      const categoryUppercase = comic.category.toUpperCase();
 
       // set b&w images
       for (let i = 1; i <= count; i++) {
         images.push(
-          `${urlCDN}/${categoryUppercase}-${comic.id}-panel-${i}.jpg`
+          `${urlCDN}/${categoryUppercase}/${categoryUppercase}-${comic.id}-panel-${i}.jpg`
         );
       }
-      this.images.share = `${urlCDN}/${categoryUppercase}-${comic.id}-share.jpg`;
-      this.images.strip = `${urlCDN}/${categoryUppercase}-${comic.id}-strip.jpg`;
+      this.images.share = `${urlCDN}/${categoryUppercase}/${categoryUppercase}-${comic.id}-share.jpg`;
+      this.images.strip = `${urlCDN}/${categoryUppercase}/${categoryUppercase}-${comic.id}-strip.jpg`;
       this.images.panels = images;
 
       // set color images
-      for (let i = 1; i <= count; i++) {
-        imagesColor.push(
-          `${urlCDN}/${categoryUppercase}-${comic.id}-panel-${i}-c.jpg`
-        );
+
+      if (comic.colored) {
+        for (let i = 1; i <= count; i++) {
+          images.push(
+            `${urlCDN}/${categoryUppercase}/${categoryUppercase}-${comic.id}-panel-${i}-c.jpg`
+          );
+        }
+        this.images.shareColor = `${urlCDN}/${categoryUppercase}/${categoryUppercase}-${comic.id}-share-c.jpg`;
+        this.images.stripColor = `${urlCDN}/${categoryUppercase}/${categoryUppercase}-${comic.id}-strip-c.jpg`;
+        this.images.panelsColor = images;
+        console.log(this.images);
+
       }
       this.images.shareColor = `${urlCDN}/${categoryUppercase}-${comic.id}-share-c.jpg`;
       this.images.stripColor = `${urlCDN}/${categoryUppercase}-${comic.id}-strip-c.jpg`;
