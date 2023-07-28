@@ -54,6 +54,7 @@ export const useComicContentStore = defineStore("comicContent", {
       this.images.panels = images;
 
       // set color images
+
       if (comic.colored) {
         for (let i = 1; i <= count; i++) {
           images.push(
@@ -64,7 +65,11 @@ export const useComicContentStore = defineStore("comicContent", {
         this.images.stripColor = `${urlCDN}/${categoryUppercase}/${categoryUppercase}-${comic.id}-strip-c.jpg`;
         this.images.panelsColor = images;
         console.log(this.images);
+
       }
+      this.images.shareColor = `${urlCDN}/${categoryUppercase}-${comic.id}-share-c.jpg`;
+      this.images.stripColor = `${urlCDN}/${categoryUppercase}-${comic.id}-strip-c.jpg`;
+      this.images.panelsColor = imagesColor;
     },
 
     async filterComics(category) {
