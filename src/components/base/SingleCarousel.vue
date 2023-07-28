@@ -8,7 +8,7 @@
         <img class="comic-strip" :src="img" />
       </slide>
     </carousel>
-    <carousel :items-to-show="1" v-else>
+    <carousel :items-to-show="1">
       <slide v-for="img in store.images.panels" v-bind:key="img">
         <img class="comic-strip" :src="img" />
       </slide>
