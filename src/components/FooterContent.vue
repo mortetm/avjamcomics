@@ -16,7 +16,6 @@ import SocialLinks from "@/components/base/SocialLinks.vue";
 footer {
   padding: 10px 0 20px 0;
   width: 100%;
-  background-color: white;
   font-weight: bold;
   font-size: 12px;
   margin-top: 50px;

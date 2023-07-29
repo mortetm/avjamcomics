@@ -23,6 +23,7 @@
 </template>
 
 <script setup>
+import { onMounted } from "vue";
 import { useHead } from "unhead";
 import { useComicContentStore } from "@/stores/comics";
 import { useFavicon } from "@vueuse/core";
@@ -47,6 +48,10 @@ useHead({
 // set favicon depending on current comic family
 const icon = useFavicon();
 icon.value = `favicon.png`;
+
+onMounted(() => {
+  document.body.style.backgroundColor = "#ffffff";
+});
 </script>
 
 <style scoped>

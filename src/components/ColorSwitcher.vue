@@ -25,8 +25,12 @@ function switchColor() {
   localStorage.setItem("comicIsColor", store.isColor);
   if (store.isColor) {
     icon.value = `../favicon-${store.chosenComic}-c.png`;
+    if (store.comicColor) {
+      document.body.style.backgroundColor = store.comicColor;
+    }
   } else {
     icon.value = `../favicon-${store.chosenComic}.png`;
+    document.body.style.backgroundColor = "#ffffff";
   }
 }
 </script>
