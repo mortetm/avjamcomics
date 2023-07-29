@@ -41,6 +41,7 @@ export const useComicContentStore = defineStore("comicContent", {
       const comic = this.filteredComics.find((comic) => comic.id === comicID);
       const count = comic.numberOfPanels;
       let images = [];
+      let imagesColor = [];
       const categoryUppercase = comic.category.toUpperCase();
 
       // set b&w images
@@ -56,14 +57,13 @@ export const useComicContentStore = defineStore("comicContent", {
       // set color images
       if (comic.colored) {
         for (let i = 1; i <= count; i++) {
-          images.push(
+          imagesColor.push(
             `${urlCDN}/${categoryUppercase}/${categoryUppercase}-${comic.id}-panel-${i}-c.jpg`
           );
         }
         this.images.shareColor = `${urlCDN}/${categoryUppercase}/${categoryUppercase}-${comic.id}-share-c.jpg`;
         this.images.stripColor = `${urlCDN}/${categoryUppercase}/${categoryUppercase}-${comic.id}-strip-c.jpg`;
-        this.images.panelsColor = images;
-        console.log(this.images);
+        this.images.panelsColor = imagesColor;
       }
     },
 

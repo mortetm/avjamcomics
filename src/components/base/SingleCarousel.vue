@@ -5,12 +5,16 @@
       v-if="store.isColor && store.chosenComic === 'dl'"
     >
       <slide v-for="img in store.images.panelsColor" v-bind:key="img">
-        <img class="comic-strip" :src="img" />
+        <div class="img-wrap">
+          <img class="comic-strip" :src="img" />
+        </div>
       </slide>
     </carousel>
     <carousel :items-to-show="1" v-else>
       <slide v-for="img in store.images.panels" v-bind:key="img">
-        <img class="comic-strip" :src="img" />
+        <div class="img-wrap">
+          <img class="comic-strip" :src="img" />
+        </div>
       </slide>
     </carousel>
 
@@ -30,7 +34,17 @@ const store = useComicContentStore();
 
 <style scoped>
 .comic-strip {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   max-width: 100%;
+}
+
+.img-wrap {
+  height: 0;
+  overflow: hidden;
+  padding-top: 50%;
 }
 
 .swipe-to-read {
