@@ -68,6 +68,13 @@ onMounted(() => {
   }
   resizeHandler();
   window.addEventListener("resize", resizeHandler);
+
+  if (store.comicColor && store.isColor) {
+    console.log(store.comicColor);
+    document.body.style.backgroundColor = store.comicColor;
+  } else {
+    document.body.style.backgroundColor = "#ffffff";
+  }
 });
 onUnmounted(() => {
   window.removeEventListener("resize", resizeHandler);
