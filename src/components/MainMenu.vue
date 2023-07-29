@@ -1,21 +1,23 @@
 <template>
   <nav>
     <router-link :to="`/${chosenComic}/latest`">
-      <div class="main-menu-logo">
-        <img v-if="store.chosenComic === 'ttb'" src="@/assets/logo-ttb.png" />
-        <img
-          v-else-if="store.chosenComic === 'thbc'"
-          src="@/assets/logo-thbc.png"
-        />
-        <img
-          v-else-if="store.chosenComic === 'dl' && !store.isColor"
-          src="@/assets/logo-dlc.png"
-        />
-        <img
-          v-else-if="store.chosenComic === 'dl' && store.isColor"
-          src="@/assets/logo-dlc-color.png"
-        />
-        <img v-else src="@/assets/logo.png" />
+      <div class="main-menu-logo-wrap">
+        <div class="main-menu-logo">
+          <img v-if="store.chosenComic === 'ttb'" src="@/assets/logo-ttb.png" />
+          <img
+            v-else-if="store.chosenComic === 'thbc'"
+            src="@/assets/logo-thbc.png"
+          />
+          <img
+            v-else-if="store.chosenComic === 'dl' && !store.isColor"
+            src="@/assets/logo-dlc.png"
+          />
+          <img
+            v-else-if="store.chosenComic === 'dl' && store.isColor"
+            src="@/assets/logo-dlc-color.png"
+          />
+          <img v-else src="@/assets/logo.png" />
+        </div>
       </div>
     </router-link>
     <div class="main-menu">
@@ -72,5 +74,18 @@ nav a.router-link-exact-active {
     align-items: center;
     gap: 26px;
   }
+}
+
+.main-menu-logo {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.main-menu-logo-wrap {
+  height: 0;
+  padding-bottom: 40%;
+  overflow: hidden;
 }
 </style>
