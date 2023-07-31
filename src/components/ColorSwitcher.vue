@@ -26,7 +26,7 @@ function switchColor() {
   if (store.isColor) {
     icon.value = `../favicon-${store.chosenComic}-c.png`;
     if (store.comicColor) {
-      document.body.style.backgroundColor = store.comicColor;
+      document.body.style.backgroundColor = `color-mix(in srgb, ${store.comicColor} 40%, #ffffff)`;
     }
   } else {
     icon.value = `../favicon-${store.chosenComic}.png`;
