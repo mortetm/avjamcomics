@@ -71,7 +71,7 @@ onMounted(() => {
 
   if (store.comicColor && store.isColor) {
     console.log(store.comicColor);
-    document.body.style.backgroundColor = store.comicColor;
+    document.body.style.backgroundColor = `color-mix(in srgb, ${store.comicColor} 40%, #ffffff)`;
   } else {
     document.body.style.backgroundColor = "#ffffff";
   }

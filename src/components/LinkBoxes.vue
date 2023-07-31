@@ -10,10 +10,11 @@
 </template>
 
 <script setup>
-import LinkBox from "@/components/LinkBox.vue";
+import LinkBox from "@/components/base/LinkBox.vue";
 import { useLinkBoxContent } from "@/composables/linkBoxContent.js";
 
 const linkBoxes = useLinkBoxContent();
+console.log("link boxes", linkBoxes);
 </script>
 
 <style scoped>

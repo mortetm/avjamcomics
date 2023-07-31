@@ -14,8 +14,10 @@
       </slide>
     </carousel>
 
-    <div>
-      <img class="swipe-to-read" src="@/assets/temp-assets/swipe.jpg" />
+    <div class="swipe-to-read">
+      <img src="@/assets/temp-assets/arrow-l.png" />
+      <span>SWIPE TO READ</span>
+      <img src="@/assets/temp-assets/arrow-r.png" />
     </div>
   </article>
 </template>
@@ -40,6 +42,18 @@ const store = useComicContentStore();
 }
 
 .swipe-to-read {
-  max-width: 250px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0;
+}
+
+.swipe-to-read img {
+  max-height: 30px;
+}
+.swipe-to-read span {
+  font-size: 20px;
+  padding: 0 10px;
 }
 </style>
