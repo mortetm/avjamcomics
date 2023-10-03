@@ -25,7 +25,7 @@ export const useComicContentStore = defineStore("comicContent", {
       stripColor: "",
       share: "",
       shareColor: "",
-      ogshare: "https://www.avjam.xyz/CDN/ogshare.png",
+      ogshare: "https://www.avjamcomics.com/CDN/ogshare.png",
     },
     comicFamily: [
       { name: "The TourBunny", code: "ttb" },
@@ -43,7 +43,7 @@ export const useComicContentStore = defineStore("comicContent", {
   },
   actions: {
     generateImages(comicID) {
-      const urlCDN = "https://www.avjam.xyz/CDN";
+      const urlCDN = "https://www.avjamcomics.com/CDN";
       const comic = this.filteredComics.find((comic) => comic.id === comicID);
       const count = comic.numberOfPanels;
       let images = [];
