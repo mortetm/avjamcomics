@@ -1,8 +1,9 @@
 import { defineStore } from "pinia";
 import axios from "axios";
+import { useLocalStorage } from "@vueuse/core";
 
 const apiUrlCTF =
-  "https://cdn.contentful.com/spaces/3skqmxt0v2pl/environments/master/entries?access_token=kyohLP1ApLQksn_-g4ZJZaM4xgWGdoJonXuXNa5Zlyg&order=-sys.createdAt";
+  "https://cdn.contentful.com/spaces/3skqmxt0v2pl/environments/master/entries?access_token=kyohLP1ApLQksn_-g4ZJZaM4xgWGdoJonXuXNa5Zlyg&order=-sys.createdAt&limit=600";
 // const apiUrlH =
 //   "https://api-eu-central-1-shared-euc1-02.hygraph.com/v2/clkmstykr0etf01ul4jnf81t9/master";
 
@@ -18,6 +19,7 @@ export const useComicContentStore = defineStore("comicContent", {
     chosenComic: null,
     isColor: true,
     comicColor: "",
+    isStorageFresh: false,
     images: {
       panels: [],
       panelsColor: [],
@@ -43,7 +45,7 @@ export const useComicContentStore = defineStore("comicContent", {
   },
   actions: {
     generateImages(comicID) {
-      const urlCDN = "https://www.avjamcomics.com/CDN";
+      const urlCDN = "https://www.avjamcomics.xyz/CDN";
       const comic = this.filteredComics.find((comic) => comic.id === comicID);
       const count = comic.numberOfPanels;
       let images = [];
@@ -95,22 +97,42 @@ export const useComicContentStore = defineStore("comicContent", {
 
     async fetchContent() {
       this.loading = true;
-      try {
-        await axios.get(apiUrlCTF).then((response) => {
-          this.comics = [];
-          response.data.items.forEach((comicArray) =>
-            this.comics.push(comicArray.fields)
-          );
-          this.loading = false;
-          this.filteredComics = this.comics.filter(
-            (comic) => comic.category === "ttb"
-          );
-          this.latestComic = this.filteredComics[0];
-          this.latestComicPostID = this.filteredComics[0].id;
-          this.checkUserPrefs();
-        });
-      } catch (error) {
-        console.error("Error fetching comic data:", error);
+      const storedComics = localStorage.getItem("comics");
+      const storedTime = localStorage.getItem("refreshTime");
+      if (storedTime && Date.now() - storedTime < 86400000) {
+        this.isStorageFresh = true;
+      }
+      if (storedComics && this.isStorageFresh) {
+        console.log("storage fresh", this.isStorageFresh);
+        this.comics = JSON.parse(storedComics);
+        this.loading = false;
+        this.filteredComics = this.comics.filter(
+          (comic) => comic.category === "ttb"
+        );
+        this.latestComic = this.filteredComics[0];
+        this.latestComicPostID = this.filteredComics[0].id;
+        this.checkUserPrefs();
+      } else {
+        try {
+          await axios.get(apiUrlCTF).then((response) => {
+            this.comics = [];
+            response.data.items.forEach((comicArray) =>
+              this.comics.push(comicArray.fields)
+            );
+            this.loading = false;
+            this.filteredComics = this.comics.filter(
+              (comic) => comic.category === "ttb"
+            );
+            this.latestComic = this.filteredComics[0];
+            this.latestComicPostID = this.filteredComics[0].id;
+            this.checkUserPrefs();
+          });
+          useLocalStorage("comics", JSON.stringify(this.comics));
+          useLocalStorage("refreshTime", Date.now());
+          this.isStorageFresh = true;
+        } catch (error) {
+          console.error("Error fetching comic data:", error);
+        }
       }
     },
   },

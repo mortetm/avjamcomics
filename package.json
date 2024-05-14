@@ -11,6 +11,7 @@
     "@vueuse/core": "^10.2.0",
     "core-js": "^3.8.3",
     "pinia": "^2.0.35",
+    "pinia-plugin-persistedstate": "^3.2.0",
     "unhead": "^1.1.27",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3"
