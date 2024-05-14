@@ -17,10 +17,7 @@ import FooterContent from "@/components/FooterContent.vue";
 import { useComicContentStore } from "./stores/comics";
 
 /* store setup */
-const store = useComicContentStore();
-
-/* call the API on mounted hook*/
-// store.fetchComics();
+let store = useComicContentStore();
 store.fetchContent();
 </script>
 

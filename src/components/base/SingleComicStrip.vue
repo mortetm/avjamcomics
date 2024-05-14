@@ -37,10 +37,10 @@ switch (store.images.panels.length) {
     padding = "27.54%";
     break;
   case 5:
-    padding = "22.17%";
+    padding = "68.05%";
     break;
   case 6:
-    padding = "18%";
+    padding = "68.05%";
     break;
   default:
     padding = "36.33%";
