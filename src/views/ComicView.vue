@@ -1,79 +1,125 @@
 <template>
   <div class="page" v-if="store.filteredComics.length > 0">
     <MainMenu :lastComic="store.latestComicPostID"></MainMenu>
-    <div class="home">
-      <ComicContent
-        :comicContent="
-          store.filteredComics.find((comic) => comic.id === comicID)
-        "
-      ></ComicContent>
+    <div class="home" v-if="currentComic">
+      <ComicContent :comicContent="currentComic"></ComicContent>
       <ComicControls
         :prev="(+comicID - 1).toString().padStart(4, '0')"
         :next="(+comicID + 1).toString().padStart(4, '0')"
         :isLast="
           comicID === store.filteredComics.length.toString().padStart(4, '0')
-            ? true
-            : false
         "
-        :isFirst="comicID === '0001' ? true : false"
+        :isFirst="comicID === '0001'"
         :lastComic="store.latestComicPostID"
       ></ComicControls>
+    </div>
+    <div v-else class="loading">
+      <p>Loading comic...</p>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { useRoute } from "vue-router";
+import { watch, computed, onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import ComicControls from "@/components/ComicControls.vue";
 import MainMenu from "@/components/MainMenu.vue";
 import { useComicContentStore } from "@/stores/comics";
 import ComicContent from "@/components/ComicContent.vue";
 import { useFavicon } from "@vueuse/core";
 
-/* store setup */
 const store = useComicContentStore();
-
-/* route */
 const route = useRoute();
-
-/* get current comicID */
-let comicID = ref(route.params.id);
-let chosenComic = ref(route.params.comic);
-
-store.filterComics(chosenComic.value);
-
-if (!route.params.id) {
-  comicID = store.latestComicPostID;
-}
-
-if (route.params.id) {
-  store.generateImages(comicID.value);
-} else if (!route.params.id) {
-  store.generateImages(comicID);
-}
-
-/* favicon */
-// set favicon depending on current comic family
+const router = useRouter();
 const icon = useFavicon();
-icon.value = `../../favicon-${chosenComic.value}.png`;
 
-/* keyboard nav */
-// const isLast =
-//   comicID.value === store.filteredComics.length.toString().padStart(4, "0")
-//     ? true
-//     : false;
-// const isFirst = comicID.value === "0001" ? true : false;
-// const prev = (+comicID.value - 1).toString().padStart(4, "0");
-// const next = (+comicID.value + 1).toString().padStart(4, "0");
+// Get comic category from route
+const chosenComic = computed(() => route.params.comic);
 
-// document.addEventListener("keydown", function (event) {
-//   if (event.key === "ArrowLeft" && !isFirst) {
-//     router.push(`/${chosenComic.value}/comic/${prev}`);
-//   }
-//   if (event.key === "ArrowRight" && !isLast) {
-//     router.push(`/${chosenComic.value}/comic/${next}`);
-//   }
-// });
-/* width */
+// Get current comic ID
+const comicID = computed(() => {
+  if (route.params.id && route.params.id !== "latest") {
+    return route.params.id;
+  }
+  return store.latestComicPostID;
+});
+
+// Get current comic object
+const currentComic = computed(() => {
+  if (!comicID.value) return null;
+  return store.filteredComics.find((comic) => comic.id === comicID.value);
+});
+
+// Initialize comics for this category
+const initializeComic = async () => {
+  // Make sure we have the right category filtered
+  if (chosenComic.value) {
+    await store.filterComics(chosenComic.value);
+  }
+
+  // Wait for comics to load if needed
+  if (store.filteredComics.length === 0) {
+    console.log("Waiting for comics to load...");
+    return;
+  }
+
+  // If route says "latest" but we have a latestComicPostID, redirect to actual ID
+  if (route.params.id === "latest" && store.latestComicPostID) {
+    router.replace(`/${chosenComic.value}/${store.latestComicPostID}`);
+    return;
+  }
+
+  // Generate images for current comic
+  if (comicID.value) {
+    console.log("Loading comic:", comicID.value);
+    store.generateImages(comicID.value);
+
+    // Set favicon
+    icon.value = `/favicon-${chosenComic.value}.png`;
+  } else {
+    console.error("No comic ID available");
+  }
+};
+
+// Initialize on mount
+onMounted(() => {
+  initializeComic();
+});
+
+// Watch for route changes
+watch(
+  () => route.params.id,
+  () => {
+    initializeComic();
+  }
+);
+
+// Watch for comic category changes
+watch(
+  () => route.params.comic,
+  () => {
+    initializeComic();
+  }
+);
+
+// Watch for when comics finish loading
+watch(
+  () => store.latestComicPostID,
+  (newVal) => {
+    if (newVal && !route.params.id) {
+      initializeComic();
+    }
+  }
+);
 </script>
+
+<style scoped>
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  font-size: 18px;
+  color: #666;
+}
+</style>

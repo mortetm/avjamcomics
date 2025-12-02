@@ -1,5 +1,5 @@
 <template>
-  <header>
+  <header v-if="props.comicContent">
     <h1>
       {{ props.comicContent.id }} -
       {{ props.comicContent.title }}
@@ -11,16 +11,19 @@
   </header>
 
   <SingleComicStrip
-    v-if="isStrip"
+    v-if="isStrip && props.comicContent"
     :comicContent="props.comicContent"
   ></SingleComicStrip>
 
-  <SingleCarousel v-else-if="!isStrip" :comicContent="props.comicContent">
+  <SingleCarousel
+    v-else-if="!isStrip && props.comicContent"
+    :comicContent="props.comicContent"
+  >
   </SingleCarousel>
 </template>
 
 <script setup>
-import { ref, defineProps, onMounted, onUnmounted } from "vue";
+import { ref, defineProps, onMounted, onUnmounted, computed } from "vue";
 import SocialLinks from "@/components/base/SocialLinks.vue";
 import "vue3-carousel/dist/carousel.css";
 import ColorSwitcher from "./ColorSwitcher.vue";
@@ -32,50 +35,76 @@ import { useHead } from "unhead";
 
 const route = useRoute();
 const router = useRouter();
-const comicID = ref(route.params.id);
-
-const props = defineProps({
-  comicContent: Object,
-});
-const isStrip = ref(true);
-
-/* store setup */
 const store = useComicContentStore();
 
-/* head: set title & meta for facebook sharing*/
-const comicFamily = store.comicFamily.find(
-  (comic) => comic.code === store.chosenComic
-);
-useHead({
-  title: `${props.comicContent.title} | ${comicFamily.name}`,
-  meta: [
-    {
-      property: "og:title",
-      content: `${props.comicContent.title} | ${comicFamily.name}`,
-    },
-    {
-      property: "og:image",
-      content: store.images.share,
-    },
-  ],
+const props = defineProps({
+  comicContent: {
+    type: Object,
+    required: false,
+    default: null,
+  },
 });
 
+const isStrip = ref(true);
+
+// Safely get comic family
+const comicFamily = computed(() => {
+  if (!store.chosenComic) return null;
+
+  return store.comicFamily.find((comic) => comic.code === store.chosenComic);
+});
+
+// Safely get comic ID
+const comicID = computed(() => route.params.id);
+
+// Computed head config - only returns data when everything is ready
+const headConfig = computed(() => {
+  if (!props.comicContent || !comicFamily.value) {
+    return {
+      title: "AvJam Comics",
+      meta: [],
+    };
+  }
+
+  return {
+    title: `${props.comicContent.title} | ${comicFamily.value.name}`,
+    meta: [
+      {
+        property: "og:title",
+        content: `${props.comicContent.title} | ${comicFamily.value.name}`,
+      },
+      {
+        property: "og:image",
+        content: store.images.share || store.images.ogshare,
+      },
+    ],
+  };
+});
+
+// Apply head config
+useHead(headConfig);
+
 onMounted(() => {
-  // move the user to /latest so that it is
-  // highlighted in the menu if it's the latest comic
-  if (comicID.value === store.latestComicPostID) {
+  // Only redirect if we have valid data
+  if (
+    comicID.value &&
+    store.latestComicPostID &&
+    comicID.value === store.latestComicPostID
+  ) {
     router.push({ path: `/${store.chosenComic}/latest` });
   }
+
   resizeHandler();
   window.addEventListener("resize", resizeHandler);
 
+  // Set background color
   if (store.comicColor && store.isColor) {
-    console.log(store.comicColor);
-    document.body.style.backgroundColor = `${store.comicColor}`;
+    document.body.style.backgroundColor = store.comicColor;
   } else {
     document.body.style.backgroundColor = "#ffffff";
   }
 });
+
 onUnmounted(() => {
   window.removeEventListener("resize", resizeHandler);
 });
