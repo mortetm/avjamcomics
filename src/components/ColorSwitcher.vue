@@ -13,26 +13,63 @@
 <script setup>
 import { useComicContentStore } from "@/stores/comics";
 import { useFavicon } from "@vueuse/core";
+import { watch, onMounted, onUnmounted } from "vue";
 
-/* icon */
 const icon = useFavicon();
-
-/* store setup */
 const store = useComicContentStore();
 
 function switchColor() {
-  store.isColor = !store.isColor;
-  localStorage.setItem("comicIsColor", store.isColor);
-  if (store.isColor) {
-    icon.value = `../favicon-${store.chosenComic}-c.png`;
-    if (store.comicColor) {
-      document.body.style.backgroundColor = `color-mix(in srgb, ${store.comicColor} 40%, #ffffff)`;
-    }
-  } else {
-    icon.value = `../favicon-${store.chosenComic}.png`;
-    document.body.style.backgroundColor = "#ffffff";
-  }
+  const newColorState = !store.isColor;
+
+  // Update store (this will trigger the CSS transition in images)
+  store.saveColorPreference(newColorState);
+
+  // Update theme without causing reflow
+  requestAnimationFrame(() => {
+    updateTheme(newColorState);
+  });
 }
+
+function updateTheme(isColor) {
+  // Update favicon
+  icon.value = isColor
+    ? `/favicon-${store.chosenComic}-c.png`
+    : `/favicon-${store.chosenComic}.png`;
+
+  // Update background color
+  const backgroundColor =
+    isColor && store.comicColor
+      ? `color-mix(in srgb, ${store.comicColor} 40%, #ffffff)`
+      : "#ffffff";
+
+  document.body.style.backgroundColor = backgroundColor;
+}
+
+onMounted(() => {
+  document.body.style.transition = "background-color 0.6s ease-in-out";
+  updateTheme(store.isColor);
+});
+
+onUnmounted(() => {
+  document.body.style.transition = "";
+  document.body.style.backgroundColor = "";
+});
+
+watch(
+  () => store.chosenComic,
+  () => {
+    updateTheme(store.isColor);
+  }
+);
+
+watch(
+  () => store.comicColor,
+  () => {
+    if (store.isColor) {
+      updateTheme(true);
+    }
+  }
+);
 </script>
 
 <style scoped>

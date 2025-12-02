@@ -1,68 +1,142 @@
 <template>
   <article>
-    <div class="img-wrap" id="img-wrap">
-      <img
-        v-if="store.isColor && store.chosenComic === 'dl'"
-        class="comic-strip"
-        id="comic-strip-color"
-        :src="store.images.stripColor"
-        width="1024"
-        height="300"
-      />
-      <img
-        v-else
-        class="comic-strip"
-        id="comic-strip"
-        :src="store.images.strip"
-        width="1024"
-        height="300"
-      />
+    <div class="img-wrap">
+      <div class="image-stack">
+        <img
+          v-show="store.images.strip"
+          class="comic-strip stack-base"
+          :src="store.images.strip || ''"
+          :alt="`Comic strip with ${panelCount} panels - Black and White`"
+          crossorigin="anonymous"
+          @error="handleImageError('bw')"
+        />
+        <img
+          v-show="store.images.stripColor"
+          class="comic-strip stack-overlay"
+          :class="{ 'show-color': store.isColor && store.images.stripColor }"
+          :src="store.images.stripColor || ''"
+          :alt="`Comic strip with ${panelCount} panels - Color`"
+          crossorigin="anonymous"
+          @error="handleImageError('color')"
+        />
+      </div>
     </div>
   </article>
 </template>
 
 <script setup>
 import { useComicContentStore } from "@/stores/comics";
-import { onMounted } from "vue";
+import { computed, onMounted, watch, nextTick } from "vue";
 
-/* store setup */
 const store = useComicContentStore();
-let padding = "";
 
-switch (store.images.panels.length) {
-  case 3:
-    padding = "36.33%";
-    break;
-  case 4:
-    padding = "27.54%";
-    break;
-  case 5:
-    padding = "68.05%";
-    break;
-  case 6:
-    padding = "68.05%";
-    break;
-  default:
-    padding = "36.33%";
-}
+const ASPECT_RATIOS = {
+  3: "1024 / 372",
+  4: "1024 / 282",
+  5: "1024 / 697",
+  6: "1024 / 697",
+  default: "1024 / 372",
+};
 
-onMounted(() => {
-  document.getElementById("img-wrap").style.paddingTop = padding;
+const panelCount = computed(() => {
+  return store.images?.panels?.length || 0;
 });
+
+const aspectRatio = computed(() => {
+  return ASPECT_RATIOS[panelCount.value] || ASPECT_RATIOS.default;
+});
+
+// Preload current comic images
+const preloadImages = async () => {
+  const imagesToPreload = [store.images.strip, store.images.stripColor].filter(
+    Boolean
+  );
+
+  const loadPromises = imagesToPreload.map((src) => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+
+      if (img.complete) {
+        resolve();
+        return;
+      }
+
+      img.onload = () => resolve();
+      img.onerror = () => resolve();
+      img.src = src;
+    });
+  });
+
+  await Promise.all(loadPromises);
+};
+
+onMounted(async () => {
+  if (store.images.strip || store.images.stripColor) {
+    await preloadImages();
+  }
+});
+
+watch(
+  () => [store.images.strip, store.images.stripColor],
+  async () => {
+    await nextTick();
+    await preloadImages();
+  },
+  { deep: true }
+);
+
+const handleImageError = (type) => {
+  console.error(`Strip image (${type}) failed to load`);
+};
 </script>
 
 <style scoped>
-.comic-strip {
-  position: absolute;
-  top: 0;
-  left: 0;
+.img-wrap {
+  width: 100%;
+  aspect-ratio: v-bind(aspectRatio);
+  position: relative;
+  background-color: #f5f5f5;
+  overflow: hidden;
+  contain: layout;
+}
+
+.image-stack {
+  position: relative;
   width: 100%;
   height: 100%;
 }
 
-.img-wrap {
-  height: 0;
-  overflow: hidden;
+.comic-strip {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+.stack-base {
   position: relative;
+}
+
+.stack-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+  pointer-events: none;
+  will-change: opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+.stack-overlay.show-color {
+  opacity: 1;
 }
 </style>
